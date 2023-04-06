@@ -10,6 +10,9 @@ const users = [];
 const tweets = [];
 app.post("/sign-up", (req, res) => {
     const {username, avatar} = req.body;
+    if(typeof username !== "string" || username === "" || !username ||typeof avatar !== "string" || avatar === "" || !avatar  ){
+        return res.sendStatus(400);
+    }
     users.push({username, avatar});
     res.send("OK");
 })
@@ -19,6 +22,9 @@ app.post("/tweets", (req, res) => {
     const tweeter = users.find((user) => user.username === username);
     if(!tweeter){
         return res.send(`UNAUTHORIZED`)
+    }
+    if(tweet === "" || !tweet || typeof tweet !== "string" || typeof username !== "string" || username === "" || !username){
+        return res.sendStatus(400);
     }
     tweets.push({username, tweet});
     res.send("OK");
