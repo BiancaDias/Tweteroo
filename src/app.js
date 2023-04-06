@@ -25,5 +25,15 @@ app.post("/tweets", (req, res) => {
 
 })
 app.get("/tweets", (req,res) =>{
-    res.send(tweets)
+    const tweetInScreen = []
+    const last10tweetrs = tweets.slice(-10);
+    last10tweetrs.forEach((tweeter) =>{
+        const userLast = users.find((user) => user.username ===tweeter.username);
+        const username = userLast.username;
+        const avatar = userLast.avatar;
+        const tweet = tweeter.tweet;
+        tweetInScreen.push({username, avatar, tweet});
+    })
+    
+    res.send(tweetInScreen)
 })
