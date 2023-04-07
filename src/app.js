@@ -43,3 +43,16 @@ app.get("/tweets", (req,res) =>{
     
     res.send(tweetInScreen)
 })
+
+
+app.get("/tweets/:username", (req, res) => {
+    const { username } = req.params;
+    const avatarUser = users.find((user) => username === user.username); //pego o perfil do fulano
+    const tweetersFromUsername = tweets.filter((user) => user.username === username)
+    const arrayDeRetorno = [];
+    tweetersFromUsername.forEach((tweets) => {
+        arrayDeRetorno.push({username, avatar:avatarUser.avatar, tweet:tweets.tweet})
+    })
+
+    res.send(arrayDeRetorno)
+})
