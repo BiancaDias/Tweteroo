@@ -31,8 +31,26 @@ app.post("/tweets", (req, res) => {
 
 })
 app.get("/tweets", (req,res) =>{
+    const page = parseInt(req.query.page);
     const tweetInScreen = []
-    const last10tweetrs = tweets.slice(-10);
+    if(page < 1){
+        return res.status(400).send('Informe uma página válida!')
+    }
+    if(!page || page===1){
+        const last10tweetrs = tweets.slice(-10);
+        last10tweetrs.forEach((tweeter) =>{
+            const userLast = users.find((user) => user.username ===tweeter.username);
+            const username = userLast.username;
+            const avatar = userLast.avatar;
+            const tweet = tweeter.tweet;
+            tweetInScreen.push({username, avatar, tweet});
+        })
+        
+        return res.send(tweetInScreen)
+    }
+    const begin = (page - 1) * 10 + 1;
+    const end = (begin + 9);
+    const last10tweetrs = tweets.slice(-end, -begin +1);
     last10tweetrs.forEach((tweeter) =>{
         const userLast = users.find((user) => user.username ===tweeter.username);
         const username = userLast.username;
@@ -40,8 +58,8 @@ app.get("/tweets", (req,res) =>{
         const tweet = tweeter.tweet;
         tweetInScreen.push({username, avatar, tweet});
     })
-    
-    res.send(tweetInScreen)
+    return res.send(tweetInScreen)
+
 })
 
 
