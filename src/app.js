@@ -14,20 +14,20 @@ app.post("/sign-up", (req, res) => {
         return res.sendStatus(400);
     }
     users.push({username, avatar});
-    res.send("OK");
+    res.status(201).send("OK");
 })
 
 app.post("/tweets", (req, res) => {
     const {username, tweet} = req.body;
     const tweeter = users.find((user) => user.username === username);
     if(!tweeter){
-        return res.send(`UNAUTHORIZED`)
+        return res.status(401).send(`UNAUTHORIZED`)
     }
     if(tweet === "" || !tweet || typeof tweet !== "string" || typeof username !== "string" || username === "" || !username){
         return res.sendStatus(400);
     }
     tweets.push({username, tweet});
-    res.send("OK");
+    res.status(201).send("OK");
 
 })
 app.get("/tweets", (req,res) =>{
